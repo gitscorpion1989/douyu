@@ -51,7 +51,18 @@ soup = BeautifulSoup(r.text)
 print r.text
 
 for table in soup.find_all('tr', {'class': "row01"}):
-	print table.find_all('td', text=True)[3].text
+	id = table.find_all('td', text=True)[3].text
+	if yuwan_dic.has_key(id):
+		yuwan_dic[id] = yuwan_dic[id] + 100
+	else:
+		yuwan_dic[id] = 100
+
+sorted_dic = sorted(yuwan_dic.items(), key=operator.itemgetter(1), reverse=True)
+#print json.dumps(sorted_dic, encoding="UTF-8", ensure_ascii=False)
+target = open ("ranking", 'a')
+target.write(json.dumps(sorted_dic, encoding="UTF-8", ensure_ascii=False).encode('utf-8').strip())
+
+
 #text = soup.prettify()
 #target = open ("test", 'a')
 #target.write(text.encode('utf-8').strip())
